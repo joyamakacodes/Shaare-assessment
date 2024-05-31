@@ -11,7 +11,6 @@ const ServiceButtons = () => {
   
   const handleSelectService = (index) => {
     const serviceTitle = Contents[index].title.toLowerCase();
-    const isCleaningService = serviceTitle.includes('cleaning');
 
     // Toggle service selection
     setCheckedServices((prev) => {
@@ -50,13 +49,13 @@ const ServiceButtons = () => {
   };
 
   return (
-    <div className="p-8 text-start">
-      <img src={progress} alt="bar" className="mb-4" />
+    <div className="p-8 text-start md:text-center">
+      <img src={progress} alt="bar" className="mb-4 md:mx-auto mx-0" />
       <h2 className='text-xl font-semibold'>What service would you like to book?</h2>
       <p className={`${warning ? 'text-red-500' : 'text-black'}`}>
         You can select one type of cleaning and extra tasks
         </p>
-      <div className="flex flex-col items-start">
+      <div className="flex flex-col items-start md:items-center">
         {Contents.map((content, index) => (
           <div key={index} className="my-4 w-full max-w-lg">
             <div className="flex justify-between items-center px-4">
