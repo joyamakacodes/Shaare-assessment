@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Contents } from './Contents';
 import progress from '../assets/Progress bar.png';
 
+
 const ServiceButtons = () => {
   const [checkedServices, setCheckedServices] = useState({});
   const [selectedService, setSelectedService] = useState(null);
