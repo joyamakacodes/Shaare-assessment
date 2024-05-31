@@ -12,43 +12,32 @@ const ServiceButtons = () => {
     const serviceTitle = Contents[index].title.toLowerCase();
     const isCleaningService = serviceTitle.includes('cleaning');
 
-    if (checkedServices[index]) {
-      setCheckedServices((prev) => ({
+    // Toggle service selection
+    setCheckedServices((prev) => {
+      const newCheckedServices = {
         ...prev,
-        [index]: false,
-      }));
-      setSelectedService(null);
-      setVisibleDetails((prev) => ({
-        ...prev,
-        [index]: false,
-      }));
-      return;
-    }
+        [index]: !prev[index],
+      };
 
-    const anotherCleaningSelected = Object.keys(checkedServices).some(
-      (key) => checkedServices[key] && Contents[key].title.toLowerCase().includes('cleaning')
-    );
+      // Count the number of selected cleaning services
+      const cleaningServicesCount = Object.keys(newCheckedServices).filter(
+        (key) => newCheckedServices[key] && Contents[key].title.toLowerCase().includes('cleaning')
+      ).length;
 
-    if (isCleaningService && anotherCleaningSelected) {
-      setWarning(true);
-      return;
-    }
+      // Set warning if more than one cleaning service is selected
+      setWarning(cleaningServicesCount > 1);
 
-    // Update checked services
-    setCheckedServices((prev) => ({
-      ...prev,
-      [index]: true,
-    }));
-
-    setWarning(isCleaningService);
+      return newCheckedServices;
+    });
 
     setVisibleDetails((prev) => ({
       ...prev,
-      [index]: true,
+      [index]: !prev[index],
     }));
 
     setSelectedService(index);
   };
+
 
 
 

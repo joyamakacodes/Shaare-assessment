@@ -30,6 +30,7 @@ const Login = () => {
       <div className="bg-white p-10">
         
       <h2 className="text-[#024751] font-bold  text-2xl">Welcome! enter your address to continue.</h2>
+      <p className="text-blue-500 mx-4 px-4 my-2 border border-yellow-200 bg-red-200 opacity-5">thie hhhhh</p>
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-xs mt-6 mx-auto"
