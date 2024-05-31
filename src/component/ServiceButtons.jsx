@@ -9,42 +9,45 @@ const ServiceButtons = () => {
   const [warning, setWarning] = useState(false)
   
   const handleSelectService = (index) => {
-    if (selectedService === null || selectedService === index) {
-      setSelectedService(selectedService === index ? null : index);
-      setWarning(false);
-    } else {
-      setWarning(true);
-    }
+    const serviceTitle = Contents[index].title.toLowerCase();
+    const isCleaningService = serviceTitle.includes('cleaning');
 
-    const updatedCheckedServices = {
-      ...checkedServices,
-      [index]: !checkedServices[index],
-    };
-
-    const selectedServicesCount = Object.values(updatedCheckedServices).filter(
-      (value) => value
-    ).length;
-
-    if (selectedServicesCount > 1) {
-      setWarning(true);
-    } else {
-      setWarning(false);
-    }
-
-    setCheckedServices(updatedCheckedServices);
-
-    // Automatically show details when the service is selected
-    if (updatedCheckedServices[index]) {
-      setVisibleDetails((prev) => ({
+    if (checkedServices[index]) {
+      setCheckedServices((prev) => ({
         ...prev,
-        [index]: true,
+        [index]: false,
       }));
-    } else {
+      setSelectedService(null);
       setVisibleDetails((prev) => ({
         ...prev,
         [index]: false,
       }));
+      return;
     }
+
+    const anotherCleaningSelected = Object.keys(checkedServices).some(
+      (key) => checkedServices[key] && Contents[key].title.toLowerCase().includes('cleaning')
+    );
+
+    if (isCleaningService && anotherCleaningSelected) {
+      setWarning(true);
+      return;
+    }
+
+    // Update checked services
+    setCheckedServices((prev) => ({
+      ...prev,
+      [index]: true,
+    }));
+
+    setWarning(isCleaningService);
+
+    setVisibleDetails((prev) => ({
+      ...prev,
+      [index]: true,
+    }));
+
+    setSelectedService(index);
   };
 
 
@@ -77,14 +80,15 @@ const ServiceButtons = () => {
                 onChange={() => handleSelectService(index)}
               />
             </div>
-            {checkedServices[index] && (
-              <button 
-                className="text-red-400 ml-[220px]" 
+            {selectedService === index && (
+              <button
+                className="text-red-400 ml-[220px]"
                 onClick={() => toggleDetails(index)}
               >
                 {visibleDetails[index] ? 'Hide details' : 'Show details'}
               </button>
             )}
+
             {selectedService === index && visibleDetails[index] && (
               <div className="mt-2 p-4 border rounded-lg bg-gray-100 h-96 overflow-y-scroll">
                 {content.description.map((desc, idx) => (
